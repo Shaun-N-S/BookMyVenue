@@ -2,7 +2,7 @@ import { CancellationPolicy } from '@domain/enums/CancellationPolicy';
 import { VenueCategory } from '@domain/enums/VenueCategory';
 import { VenueType } from '@domain/enums/VenueType';
 
-export interface CreateVenueDTO {
+export interface CreateVenueEntityDTO {
   name: string;
 
   description: string;
@@ -17,9 +17,9 @@ export interface CreateVenueDTO {
 
   amenities: string[];
 
-  coverImage?: Express.Multer.File;
+  coverImage?: string;
 
-  images?: Express.Multer.File[];
+  images?: string[];
 
   address: string;
 

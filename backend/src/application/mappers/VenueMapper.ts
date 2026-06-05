@@ -1,10 +1,9 @@
 import { Types } from 'mongoose';
-
 import { Venue } from '@domain/entities/Venue';
-
 import { IVenueModel } from '@infrastructure/database/models/VenueModel';
-
 import { Mapper } from '@shared/types/Mapper';
+import { ApprovalStatus } from '@domain/enums/ApprovalStatus';
+import { CreateVenueEntityDTO } from '@application/dto/venue/CreateVenueEntityDTO';
 
 export class VenueMapper {
   static fromMongooseDocument(doc: IVenueModel): Venue {
@@ -93,6 +92,30 @@ export class VenueMapper {
       totalReviews: venue.totalReviews,
 
       totalBookings: venue.totalBookings,
+    };
+  }
+
+  static createToEntity(dto: CreateVenueEntityDTO, ownerId: string): Venue {
+    return {
+      ownerId,
+
+      ...dto,
+
+      images: dto.images ?? [],
+
+      rules: dto.rules ?? [],
+
+      approvalStatus: ApprovalStatus.PENDING,
+
+      isFeatured: false,
+
+      isActive: true,
+
+      averageRating: 0,
+
+      totalReviews: 0,
+
+      totalBookings: 0,
     };
   }
 }

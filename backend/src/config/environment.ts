@@ -13,6 +13,9 @@ export interface Environment {
   JWT_REFRESH_SECRET: string;
   JWT_ACCESS_EXPIRES_IN: SignOptions['expiresIn'];
   JWT_REFRESH_EXPIRES_IN: SignOptions['expiresIn'];
+  CLOUDINARY_CLOUD_NAME: string;
+  CLOUDINARY_API_KEY: string;
+  CLOUDINARY_API_SECRET: string;
 }
 
 const getEnvOrThrow = (key: string): string => {
@@ -31,4 +34,7 @@ export const env: Environment = {
   JWT_REFRESH_SECRET: getEnvOrThrow('JWT_REFRESH_SECRET'),
   JWT_ACCESS_EXPIRES_IN: (process.env.JWT_ACCESS_EXPIRES_IN || '15m') as SignOptions['expiresIn'],
   JWT_REFRESH_EXPIRES_IN: (process.env.JWT_REFRESH_EXPIRES_IN || '7d') as SignOptions['expiresIn'],
+  CLOUDINARY_CLOUD_NAME: getEnvOrThrow('CLOUDINARY_CLOUD_NAME'),
+  CLOUDINARY_API_KEY: getEnvOrThrow('CLOUDINARY_API_KEY'),
+  CLOUDINARY_API_SECRET: getEnvOrThrow('CLOUDINARY_API_SECRET'),
 };
