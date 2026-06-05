@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from '@config/environment';
-import { Database } from '@infrastructure/database/mongodb';
+import { Database } from '@infrastructure/database/connectDB/mongodb';
 import { errorMiddleware } from '@presentation/middleware/error.middleware';
 import { NotFoundError } from '@shared/errors/app.error';
 
