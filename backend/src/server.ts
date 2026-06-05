@@ -2,9 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from '@config/environment';
-import { Database } from '@infrastructure/database/mongodb';
+import { Database } from '@infrastructure/database/connectDB/mongodb';
 import { errorMiddleware } from '@presentation/middleware/error.middleware';
 import { NotFoundError } from '@shared/errors/app.error';
+import { Venue_Router } from '@presentation/routes/venue/venueRoutes';
+import { ROUTES } from '@shared/constants/routes';
 
 const app = express();
 
@@ -45,6 +47,8 @@ app.get('/health', async (_req, res, next) => {
     next(error);
   }
 });
+
+app.use(ROUTES.VENUES.BASE, new Venue_Router().get_router());
 
 // 404 Handler
 app.use((req, _res, next) => {
