@@ -1,7 +1,9 @@
+import { UserRole } from '@domain/enums/userRole';
+
 export interface JwtPayload {
   userId: string;
   email: string;
-  role?: string;
+  role: UserRole;
 }
 
 export interface IJwtService {

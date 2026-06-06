@@ -16,6 +16,10 @@ export interface Environment {
   CLOUDINARY_CLOUD_NAME: string;
   CLOUDINARY_API_KEY: string;
   CLOUDINARY_API_SECRET: string;
+  EMAIL_USER: string;
+  EMAIL_PASS: string;
+  UPSTASH_REDIS_REST_URL: string;
+  UPSTASH_REDIS_REST_TOKEN: string;
 }
 
 const getEnvOrThrow = (key: string): string => {
@@ -37,4 +41,8 @@ export const env: Environment = {
   CLOUDINARY_CLOUD_NAME: getEnvOrThrow('CLOUDINARY_CLOUD_NAME'),
   CLOUDINARY_API_KEY: getEnvOrThrow('CLOUDINARY_API_KEY'),
   CLOUDINARY_API_SECRET: getEnvOrThrow('CLOUDINARY_API_SECRET'),
+  EMAIL_USER: getEnvOrThrow('EMAIL_USER'),
+  EMAIL_PASS: getEnvOrThrow('EMAIL_PASS'),
+  UPSTASH_REDIS_REST_URL: getEnvOrThrow('UPSTASH_REDIS_REST_URL'),
+  UPSTASH_REDIS_REST_TOKEN: getEnvOrThrow('UPSTASH_REDIS_REST_TOKEN'),
 };

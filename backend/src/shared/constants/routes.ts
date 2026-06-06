@@ -24,4 +24,10 @@ export const ROUTES = {
   NOTIFICATIONS: {
     BASE: '/notifications',
   },
+
+  AUTH: {
+    BASE: '/auth',
+    SIGN_UP: '/sign-up',
+    VERIFY_EMAIL: '/verify-email',
+  },
 } as const;
