@@ -29,8 +29,12 @@ export const ROUTES = {
     BASE: '/auth',
     SIGN_UP: '/sign-up',
     VERIFY_EMAIL: '/verify-email',
+    RESEND_OTP: '/resend-otp',
+    GOOGLE_SIGNUP: '/google-signup',
+    LOGIN: '/login',
     FORGOT_PASSWORD: '/forgot-password',
     RESET_PASSWORD: '/reset-password',
     REFRESH_TOKEN: '/refresh-token',
+    LOGOUT: '/logout',
   },
 } as const;

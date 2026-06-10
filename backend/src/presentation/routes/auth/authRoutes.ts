@@ -23,6 +23,15 @@ export class Auth_Router {
       },
     );
     this._route.post(
+      ROUTES.AUTH.GOOGLE_SIGNUP,
+      (req: Request, res: Response, next: NextFunction) => {
+        authController.googleSignUp(req, res, next);
+      },
+    );
+    this._route.post(ROUTES.AUTH.LOGIN, (req: Request, res: Response, next: NextFunction) => {
+      authController.login(req, res, next);
+    });
+    this._route.post(
       ROUTES.AUTH.FORGOT_PASSWORD,
       (req: Request, res: Response, next: NextFunction) => {
         authController.forgotPassword(req, res, next);
@@ -34,6 +43,15 @@ export class Auth_Router {
         authController.resetPassword(req, res, next);
       },
     );
+    this._route.post(
+      ROUTES.AUTH.REFRESH_TOKEN,
+      (req: Request, res: Response, next: NextFunction) => {
+        authController.refreshToken(req, res, next);
+      },
+    );
+    this._route.post(ROUTES.AUTH.LOGOUT, (req: Request, res: Response, next: NextFunction) => {
+      authController.logout(req, res, next);
+    });
   }
 
   public get_router(): Router {

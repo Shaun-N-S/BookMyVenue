@@ -14,6 +14,8 @@ import { IForgotPasswordUseCase } from '@application/interfaces/usecases/auth/IF
 import { IResetPasswordUseCase } from '@application/interfaces/usecases/auth/IResetPasswordUseCase';
 import { forgotPasswordSchema } from '@shared/validations/auth/forgotPasswordValidation';
 import { resetPasswordSchema } from '@shared/validations/auth/resetPasswordValidation';
+import { IRefreshTokenUseCase } from '@application/interfaces/usecases/auth/IRefreshTokenUseCase';
+import { ILoginUseCase } from '@application/interfaces/usecases/auth/ILoginUseCase';
 
 export class AuthController {
   constructor(
@@ -22,6 +24,8 @@ export class AuthController {
     private readonly _googleSignUpUseCase: IGoogleSignUpUseCase,
     private readonly _forgotPasswordUseCase: IForgotPasswordUseCase,
     private readonly _resetPasswordUseCase: IResetPasswordUseCase,
+    private readonly _refreshTokenUseCase: IRefreshTokenUseCase,
+    private readonly _loginUseCase: ILoginUseCase,
   ) {}
 
   async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -95,6 +99,70 @@ export class AuthController {
       await this._resetPasswordUseCase.execute(validatedData.token, validatedData.password);
 
       ResponseHelper.success(res, HTTP_STATUS.OK, AUTH_SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESS);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async refreshToken(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const refreshToken = req.cookies.refreshToken;
+
+      if (!refreshToken) {
+        throw new Error('Refresh token not found');
+      }
+
+      const result = await this._refreshTokenUseCase.execute(refreshToken);
+
+      ResponseHelper.success(res, HTTP_STATUS.OK, 'Access token refreshed', result);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email, password } = req.body;
+
+      const result = await this._loginUseCase.execute(email, password);
+
+      if (result.emailVerificationRequired) {
+        ResponseHelper.success(
+          res,
+          HTTP_STATUS.OK,
+          'Please verify your email. OTP has been sent.',
+          {
+            email,
+            emailVerificationRequired: true,
+          },
+        );
+
+        return;
+      }
+
+      AuthCookieUtil.setRefreshTokenCookie(
+        res,
+        result.refreshToken!,
+        process.env.JWT_REFRESH_EXPIRES_IN!,
+      );
+
+      ResponseHelper.success(res, HTTP_STATUS.OK, AUTH_SUCCESS_MESSAGES.LOGIN_SUCCESS, {
+        accessToken: result.accessToken,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const refreshToken = req.cookies.refreshToken;
+
+      if (!refreshToken) {
+        throw new Error('Refresh token not found');
+      }
+
+      AuthCookieUtil.clearRefreshTokenCookie(res);
+
+      ResponseHelper.success(res, HTTP_STATUS.OK, AUTH_SUCCESS_MESSAGES.LOGOUT_SUCCESS);
     } catch (error) {
       next(error);
     }
