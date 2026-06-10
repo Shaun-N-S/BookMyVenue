@@ -46,6 +46,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     await this._userRepository.save(userEntity);
 
     const otp = this._otpService.generateOtp();
+    console.log(otp);
 
     await this._redisService.set(`email-verification:${userEntity.email}`, otp, 300);
 

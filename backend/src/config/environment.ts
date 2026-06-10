@@ -21,6 +21,8 @@ export interface Environment {
   UPSTASH_REDIS_REST_URL: string;
   UPSTASH_REDIS_REST_TOKEN: string;
   GOOGLE_CLIENT_ID: string;
+  RESET_PASSWORD_SECRET: string;
+  CLIENT_URL: string;
 }
 
 const getEnvOrThrow = (key: string): string => {
@@ -47,4 +49,6 @@ export const env: Environment = {
   UPSTASH_REDIS_REST_URL: getEnvOrThrow('UPSTASH_REDIS_REST_URL'),
   UPSTASH_REDIS_REST_TOKEN: getEnvOrThrow('UPSTASH_REDIS_REST_TOKEN'),
   GOOGLE_CLIENT_ID: getEnvOrThrow('GOOGLE_CLIENT_ID'),
+  RESET_PASSWORD_SECRET: getEnvOrThrow('RESET_PASSWORD_SECRET'),
+  CLIENT_URL: getEnvOrThrow('CLIENT_URL'),
 };

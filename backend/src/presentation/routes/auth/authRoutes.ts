@@ -22,6 +22,18 @@ export class Auth_Router {
         authController.verifyEmail(req, res, next);
       },
     );
+    this._route.post(
+      ROUTES.AUTH.FORGOT_PASSWORD,
+      (req: Request, res: Response, next: NextFunction) => {
+        authController.forgotPassword(req, res, next);
+      },
+    );
+    this._route.post(
+      ROUTES.AUTH.RESET_PASSWORD,
+      (req: Request, res: Response, next: NextFunction) => {
+        authController.resetPassword(req, res, next);
+      },
+    );
   }
 
   public get_router(): Router {

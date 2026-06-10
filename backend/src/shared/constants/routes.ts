@@ -29,5 +29,8 @@ export const ROUTES = {
     BASE: '/auth',
     SIGN_UP: '/sign-up',
     VERIFY_EMAIL: '/verify-email',
+    FORGOT_PASSWORD: '/forgot-password',
+    RESET_PASSWORD: '/reset-password',
+    REFRESH_TOKEN: '/refresh-token',
   },
 } as const;
