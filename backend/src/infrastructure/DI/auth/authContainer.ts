@@ -1,6 +1,8 @@
 import { CreateUserUseCase } from '@application/usecases/auth/CreateUserUseCase';
 import { ForgotPasswordUseCase } from '@application/usecases/auth/ForgotPasswordUseCase';
 import { GoogleSignUpUseCase } from '@application/usecases/auth/GoogleSignUpUseCase';
+import { LoginUseCase } from '@application/usecases/auth/LoginUseCase';
+import { RefreshTokenUseCase } from '@application/usecases/auth/RefreshTokenUseCase';
 import { ResetPasswordUseCase } from '@application/usecases/auth/ResetPasswordUseCase';
 import { VerifyEmailUseCase } from '@application/usecases/auth/VerifyEmailUseCase';
 import { UserRepository } from '@infrastructure/repositories/UserRepository';
@@ -40,10 +42,21 @@ const resetPasswordUseCase = new ResetPasswordUseCase(
   jwtService,
   passwordHasher,
 );
+const refreshTokenUseCase = new RefreshTokenUseCase(userRepository, jwtService);
+const loginUseCase = new LoginUseCase(
+  userRepository,
+  passwordHasher,
+  jwtService,
+  emailService,
+  otpService,
+  redisService,
+);
 export const authController = new AuthController(
   createUserUseCase,
   verifyEmailUseCase,
   googleSignUpUseCase,
   forgotPasswordUseCase,
   resetPasswordUseCase,
+  refreshTokenUseCase,
+  loginUseCase,
 );
