@@ -1,22 +1,17 @@
 import { emailLayout } from './Layout';
 
-export const resetPasswordTemplate = (name: string, otp: string): string => {
+export const resetPasswordTemplate = (name: string, resetLink: string): string => {
   const body = `
-    <h2>
-      Reset Password
-    </h2>
+    <h2>Reset Password</h2>
+
+    <p>Hello ${name},</p>
 
     <p>
-      Hello ${name},
+      We received a request to reset your password.
     </p>
 
     <p>
-      We received a request to reset
-      your password.
-    </p>
-
-    <p>
-      Use this OTP:
+      Click the button below to create a new password.
     </p>
 
     <div
@@ -25,21 +20,29 @@ export const resetPasswordTemplate = (name: string, otp: string): string => {
         margin:30px 0;
       "
     >
-      <span
+      <a
+        href="${resetLink}"
         style="
-          font-size:32px;
-          font-weight:bold;
-          letter-spacing:8px;
-          color:#2563eb;
+          background:#2563eb;
+          color:white;
+          padding:12px 24px;
+          text-decoration:none;
+          border-radius:8px;
+          display:inline-block;
         "
       >
-        ${otp}
-      </span>
+        Reset Password
+      </a>
     </div>
 
     <p>
-      This OTP expires in
-      <strong>5 minutes</strong>.
+      This link expires in
+      <strong>15 minutes</strong>.
+    </p>
+
+    <p>
+      If you didn't request this,
+      please ignore this email.
     </p>
   `;
 

@@ -22,4 +22,15 @@ export class JwtService implements IJwtService {
   verifyRefreshToken(token: string): JwtPayload {
     return jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload;
   }
+  generateResetToken(email: string): string {
+    return jwt.sign({ email, type: 'reset-password' }, process.env.RESET_PASSWORD_SECRET!, {
+      expiresIn: '15m',
+    });
+  }
+  verifyResetToken(token: string) {
+    return jwt.verify(token, process.env.RESET_PASSWORD_SECRET!) as {
+      email: string;
+      type: string;
+    };
+  }
 }
