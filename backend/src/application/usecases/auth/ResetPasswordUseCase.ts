@@ -3,6 +3,7 @@ import { IPasswordHasher } from '@application/interfaces/services/IPasswordHashe
 import { IRedisService } from '@application/interfaces/services/IRedisService';
 import { IJwtService } from '@application/interfaces/services/JwtServiceInterface';
 import { IResetPasswordUseCase } from '@application/interfaces/usecases/auth/IResetPasswordUseCase';
+import { BadRequestError, NotFoundError } from '@shared/errors/app.error';
 
 export class ResetPasswordUseCase implements IResetPasswordUseCase {
   constructor(
@@ -16,7 +17,7 @@ export class ResetPasswordUseCase implements IResetPasswordUseCase {
     const payload = this._jwtService.verifyResetToken(token);
 
     if (payload.type !== 'reset-password') {
-      throw new Error('Invalid token type');
+      throw new BadRequestError('Invalid token type');
     }
 
     const email = payload.email;
@@ -24,17 +25,17 @@ export class ResetPasswordUseCase implements IResetPasswordUseCase {
     const storedToken = await this._redisService.get(`reset-password:${email}`);
 
     if (!storedToken) {
-      throw new Error('Reset token expired');
+      throw new BadRequestError('Reset token expired');
     }
 
     if (storedToken !== token) {
-      throw new Error('Invalid reset token');
+      throw new BadRequestError('Invalid reset token');
     }
 
     const user = await this._userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundError('User not found');
     }
 
     const hashedPassword = await this._passwordHasher.hash(password);

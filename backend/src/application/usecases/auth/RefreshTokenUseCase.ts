@@ -1,6 +1,7 @@
 import { IUserRepository } from '@application/interfaces/repositories/IUserRepository';
 import { IJwtService } from '@application/interfaces/services/JwtServiceInterface';
 import { IRefreshTokenUseCase } from '@application/interfaces/usecases/auth/IRefreshTokenUseCase';
+import { NotFoundError } from '@shared/errors/app.error';
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
   constructor(
@@ -16,7 +17,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     const user = await this._userRepository.findById(payload.userId);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundError('User not found');
     }
 
     const accessToken = this._jwtService.generateAccessToken({
