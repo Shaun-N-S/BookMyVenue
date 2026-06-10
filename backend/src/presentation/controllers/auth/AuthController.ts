@@ -9,11 +9,13 @@ import { AuthProvider } from '@domain/enums/AuthProvider';
 import { createUserSchema } from '@shared/validations/auth/createUserValidation';
 import { verifyEmailSchema } from '@shared/validations/auth/verifyEmailValidation';
 import { AuthCookieUtil } from '@shared/utils/authCookie';
+import { IGoogleSignUpUseCase } from '@application/interfaces/usecases/auth/IGoogleSignUpUseCase';
 
 export class AuthController {
   constructor(
     private readonly _createUserUseCase: ICreateUserUseCase,
     private readonly _verifyEmailUseCase: IVerifyEmailUseCase,
+    private readonly _googleSignUpUseCase: IGoogleSignUpUseCase,
   ) {}
 
   async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -45,6 +47,24 @@ export class AuthController {
       ResponseHelper.success(res, HTTP_STATUS.OK, AUTH_SUCCESS_MESSAGES.EMAIL_VERIFIED, {
         accessToken,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async googleSignUp(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { idToken } = req.body;
+
+      const { accessToken, refreshToken } = await this._googleSignUpUseCase.execute(idToken);
+
+      AuthCookieUtil.setRefreshTokenCookie(res, refreshToken, process.env.JWT_REFRESH_EXPIRES_IN!);
+      ResponseHelper.success(
+        res,
+        HTTP_STATUS.CREATED,
+        AUTH_SUCCESS_MESSAGES.GOOGLE_SIGNUP_SUCCESS,
+        accessToken,
+      );
     } catch (error) {
       next(error);
     }

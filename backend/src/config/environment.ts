@@ -20,6 +20,7 @@ export interface Environment {
   EMAIL_PASS: string;
   UPSTASH_REDIS_REST_URL: string;
   UPSTASH_REDIS_REST_TOKEN: string;
+  GOOGLE_CLIENT_ID: string;
 }
 
 const getEnvOrThrow = (key: string): string => {
@@ -45,4 +46,5 @@ export const env: Environment = {
   EMAIL_PASS: getEnvOrThrow('EMAIL_PASS'),
   UPSTASH_REDIS_REST_URL: getEnvOrThrow('UPSTASH_REDIS_REST_URL'),
   UPSTASH_REDIS_REST_TOKEN: getEnvOrThrow('UPSTASH_REDIS_REST_TOKEN'),
+  GOOGLE_CLIENT_ID: getEnvOrThrow('GOOGLE_CLIENT_ID'),
 };
