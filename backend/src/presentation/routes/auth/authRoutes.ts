@@ -22,6 +22,9 @@ export class Auth_Router {
         authController.verifyEmail(req, res, next);
       },
     );
+    this._route.post(ROUTES.AUTH.RESEND_OTP, (req: Request, res: Response, next: NextFunction) => {
+      authController.resendOtp(req, res, next);
+    });
     this._route.post(
       ROUTES.AUTH.GOOGLE_SIGNUP,
       (req: Request, res: Response, next: NextFunction) => {

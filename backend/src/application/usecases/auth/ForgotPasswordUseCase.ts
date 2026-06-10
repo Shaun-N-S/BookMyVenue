@@ -3,6 +3,7 @@ import { IEmailService } from '@application/interfaces/services/IEmailService';
 import { IRedisService } from '@application/interfaces/services/IRedisService';
 import { IJwtService } from '@application/interfaces/services/JwtServiceInterface';
 import { IForgotPasswordUseCase } from '@application/interfaces/usecases/auth/IForgotPasswordUseCase';
+import { NotFoundError } from '@shared/errors/app.error';
 import { resetPasswordTemplate } from '@shared/templates/email/resetPasswordTemplate';
 
 export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
@@ -17,7 +18,7 @@ export class ForgotPasswordUseCase implements IForgotPasswordUseCase {
     const user = await this._userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundError('User not found');
     }
 
     const token = this._tokenService.generateResetToken(user.email);

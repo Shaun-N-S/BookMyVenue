@@ -16,6 +16,7 @@ import { forgotPasswordSchema } from '@shared/validations/auth/forgotPasswordVal
 import { resetPasswordSchema } from '@shared/validations/auth/resetPasswordValidation';
 import { IRefreshTokenUseCase } from '@application/interfaces/usecases/auth/IRefreshTokenUseCase';
 import { ILoginUseCase } from '@application/interfaces/usecases/auth/ILoginUseCase';
+import { IResendOtpUseCase } from '@application/interfaces/usecases/auth/IResendOtpUseCase';
 
 export class AuthController {
   constructor(
@@ -26,6 +27,7 @@ export class AuthController {
     private readonly _resetPasswordUseCase: IResetPasswordUseCase,
     private readonly _refreshTokenUseCase: IRefreshTokenUseCase,
     private readonly _loginUseCase: ILoginUseCase,
+    private readonly _resendOtpUseCase: IResendOtpUseCase,
   ) {}
 
   async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -152,6 +154,19 @@ export class AuthController {
       next(error);
     }
   }
+
+  async resendOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email } = validateRequest(verifyEmailSchema, req.body);
+
+      await this._resendOtpUseCase.execute(email);
+
+      ResponseHelper.success(res, HTTP_STATUS.OK, AUTH_SUCCESS_MESSAGES.OTP_RESENT_SUCCESS);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const refreshToken = req.cookies.refreshToken;

@@ -6,6 +6,7 @@ import { IOtpService } from '@application/interfaces/services/IOtpService';
 import { IRedisService } from '@application/interfaces/services/IRedisService';
 import { ILoginUseCase } from '@application/interfaces/usecases/auth/ILoginUseCase';
 import { otpVerificationTemplate } from '@shared/templates/email/otpVerificationTemplate';
+import { BadRequestError } from '@shared/errors/app.error';
 
 export class LoginUseCase implements ILoginUseCase {
   constructor(
@@ -28,7 +29,7 @@ export class LoginUseCase implements ILoginUseCase {
     const user = await this._userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new BadRequestError('Invalid email or password');
     }
 
     const isPasswordValid = await this._passwordHasher.compare(password, user.passwordHash!);
