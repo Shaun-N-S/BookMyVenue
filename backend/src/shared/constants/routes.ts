@@ -3,13 +3,9 @@ export const ROUTES = {
 
   VENUES: {
     BASE: '/venues',
-
     CREATE: '/',
-
     GET_BY_ID: '/:venueId',
-
     UPDATE: '/:venueId',
-
     DELETE: '/:venueId',
   },
 
@@ -23,6 +19,10 @@ export const ROUTES = {
 
   NOTIFICATIONS: {
     BASE: '/notifications',
+  },
+  PROFILE: {
+    BASE: '/profile',
+    USER_PROFILE: '/user_profile',
   },
 
   AUTH: {
