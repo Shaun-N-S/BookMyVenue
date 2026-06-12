@@ -8,6 +8,7 @@ import { NotFoundError } from '@shared/errors/app.error';
 import { Venue_Router } from '@presentation/routes/venue/venueRoutes';
 import { ROUTES } from '@shared/constants/routes';
 import { Auth_Router } from '@presentation/routes/auth/authRoutes';
+import { Profile_Router } from '@presentation/routes/profile/profileRoutes';
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.get('/health', async (_req, res, next) => {
 
 app.use(ROUTES.VENUES.BASE, new Venue_Router().get_router());
 app.use(ROUTES.AUTH.BASE, new Auth_Router().get_router());
+app.use(ROUTES.PROFILE.BASE, new Profile_Router().get_router());
 
 // 404 Handler
 app.use((req, _res, next) => {
