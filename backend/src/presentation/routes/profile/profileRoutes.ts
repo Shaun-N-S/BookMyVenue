@@ -27,6 +27,13 @@ export class Profile_Router {
         profileController.submitVenueOwnerUpgrade(req, res, next);
       },
     );
+    this._route.get(
+      ROUTES.PROFILE.VENUE_OWNER_PROFILE,
+      authMiddleware,
+      (req: Request, res: Response, next: NextFunction) => {
+        profileController.getVenueOwnerProfile(req, res, next);
+      },
+    );
   }
 
   public get_router(): Router {

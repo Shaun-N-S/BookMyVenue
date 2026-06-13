@@ -24,6 +24,7 @@ export const ROUTES = {
     BASE: '/profile',
     USER_PROFILE: '/user_profile',
     VENUE_OWNER_UPGRADE: '/venue-owner-upgrade',
+    VENUE_OWNER_PROFILE: '/venue-owner',
   },
 
   AUTH: {

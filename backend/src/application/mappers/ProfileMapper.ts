@@ -1,4 +1,7 @@
-import { GetUserProfileResponseDto } from '@application/dto/profile/GetProfileResponseDto';
+import {
+  GetUserProfileResponseDto,
+  GetVenueOwnerProfileResponseDto,
+} from '@application/dto/profile/GetProfileResponseDto';
 import { VenueOwnerUpgradeDto } from '@application/dto/profile/VenueOwnerUpgradeDto';
 import { User } from '@domain/entities/user';
 import { DocumentType } from '@domain/enums/documentType';
@@ -44,4 +47,48 @@ export class ProfileMapper {
 
     return user;
   };
+  static toVenueOwnerProfileDto(user: User): GetVenueOwnerProfileResponseDto {
+    if (!user.venueOwnerProfile) {
+      throw new Error('Venue owner profile not found');
+    }
+
+    const { kycStatus, identityProof, bankDetails } = user.venueOwnerProfile;
+
+    return {
+      id: user.id!,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      profileImage: user.profileImage,
+
+      role: user.role,
+      accountStatus: user.accountStatus,
+
+      lastLoginAt: user.lastLoginAt,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+
+      venueOwnerProfile: {
+        kycStatus,
+
+        identityProof: identityProof
+          ? {
+              documentType: identityProof.documentType,
+              documentNumber: identityProof.documentNumber,
+              documentImage: identityProof.documentImage,
+            }
+          : undefined,
+
+        bankDetails: bankDetails
+          ? {
+              accountHolderName: bankDetails.accountHolderName,
+              bankName: bankDetails.bankName,
+              accountNumber: bankDetails.accountNumber,
+              ifscCode: bankDetails.ifscCode,
+              cancelledChequeImage: bankDetails.cancelledChequeImage,
+            }
+          : undefined,
+      },
+    };
+  }
 }

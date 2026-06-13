@@ -1,4 +1,5 @@
 import { IGetUserProfileUseCase } from '@application/interfaces/usecases/profile/IGetUserProfileUseCase';
+import { IGetVenueOwnerProfileUseCase } from '@application/interfaces/usecases/profile/IGetVenueOwnerProfileUseCase';
 import { ISubmitVenueOwnerUpgradeUseCase } from '@application/interfaces/usecases/profile/ISubmitVenueOwnerUpgradeUseCase';
 import { HTTP_STATUS } from '@shared/constants/httpStatus';
 import { BadRequestError, UnauthorizedError } from '@shared/errors/app.error';
@@ -11,6 +12,7 @@ export class ProfileController {
   constructor(
     private readonly _getUserProfileUseCase: IGetUserProfileUseCase,
     private readonly _submitVenueOwnerUpgradeUseCase: ISubmitVenueOwnerUpgradeUseCase,
+    private readonly _getVenueOwnerProfileUseCase: IGetVenueOwnerProfileUseCase,
   ) {}
   async getUserProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -41,6 +43,22 @@ export class ProfileController {
         res,
         HTTP_STATUS.OK,
         'Venue owner upgrade request submitted successfully',
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getVenueOwnerProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { userId } = res.locals.user;
+
+      const profile = await this._getVenueOwnerProfileUseCase.execute(userId);
+
+      ResponseHelper.success(
+        res,
+        HTTP_STATUS.OK,
+        'Venue owner profile fetched successfully',
+        profile,
       );
     } catch (error) {
       next(error);
