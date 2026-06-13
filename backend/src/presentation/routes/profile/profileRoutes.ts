@@ -13,11 +13,18 @@ export class Profile_Router {
   }
 
   private _setRoutes(): void {
-    this._route.post(
+    this._route.get(
       ROUTES.PROFILE.USER_PROFILE,
       authMiddleware,
       (req: Request, res: Response, next: NextFunction) => {
         profileController.getUserProfile(req, res, next);
+      },
+    );
+    this._route.post(
+      ROUTES.PROFILE.VENUE_OWNER_UPGRADE,
+      authMiddleware,
+      (req: Request, res: Response, next: NextFunction) => {
+        profileController.submitVenueOwnerUpgrade(req, res, next);
       },
     );
   }
