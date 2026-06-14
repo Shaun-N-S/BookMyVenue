@@ -5,4 +5,5 @@ export interface IUserRepository extends IBaseRepository<User> {
   findByEmail(email: string): Promise<User | null>;
   findByPhone(phone: string): Promise<User | null>;
   findByGoogleId(googleId: string): Promise<User | null>;
+  updateProfileImage(userId: string, profileImage: string | undefined): Promise<void>;
 }
