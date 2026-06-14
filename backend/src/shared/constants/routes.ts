@@ -23,6 +23,8 @@ export const ROUTES = {
   PROFILE: {
     BASE: '/profile',
     USER_PROFILE: '/user_profile',
+    PROFILE_IMAGE_UPLOAD: '/upload-image',
+    PROFILE_IMAGE_DELETE: '/upload-delete',
     VENUE_OWNER_UPGRADE: '/venue-owner-upgrade',
     VENUE_OWNER_PROFILE: '/venue-owner',
   },

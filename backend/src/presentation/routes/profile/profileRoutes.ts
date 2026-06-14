@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { ROUTES } from '@shared/constants/routes';
 import { profileController } from '@infrastructure/DI/profile/profileContainer';
 import { authMiddleware } from '@presentation/middleware/auth.middleware';
+import { upload } from '@presentation/middleware/multer.middleware';
 
 export class Profile_Router {
   private _route: Router;
@@ -32,6 +33,21 @@ export class Profile_Router {
       authMiddleware,
       (req: Request, res: Response, next: NextFunction) => {
         profileController.getVenueOwnerProfile(req, res, next);
+      },
+    );
+    this._route.patch(
+      ROUTES.PROFILE.PROFILE_IMAGE_UPLOAD,
+      authMiddleware,
+      upload.single('profileImage'),
+      (req: Request, res: Response, next: NextFunction) => {
+        profileController.uploadProfileImage(req, res, next);
+      },
+    );
+    this._route.delete(
+      ROUTES.PROFILE.PROFILE_IMAGE_DELETE,
+      authMiddleware,
+      (req: Request, res: Response, next: NextFunction) => {
+        profileController.deleteProfileImage(req, res, next);
       },
     );
   }
